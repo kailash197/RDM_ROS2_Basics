@@ -1,0 +1,97 @@
+To create a new message, perform the following steps:
+
+1. Create a directory named 'msg' inside your package
+2. Inside this directory, create a file named Name_of_your_message.msg (more information below)
+3. Modify the CMakeLists.txt file (more information below)
+4. Modify package.xml file (more information below)
+5. Compile and source
+6. Use in code
+
+```bash
+ros2 pkg create --build-type ament_cmake custom_interfaces --dependencies rclcpp std_msgs
+
+cd ~/ros2_ws/src/custom_interfaces
+mkdir msg
+```
+
+```
+# Age.msg inside msg folder
+float32 years
+float32 months
+float32 days
+```
+
+```
+# CMakeLists.txt
+
+cmake_minimum_required(VERSION 3.8)
+project(custom_interfaces)
+
+if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+  add_compile_options(-Wall -Wextra -Wpedantic)
+endif()
+
+# find dependencies
+find_package(ament_cmake REQUIRED)
+find_package(rclcpp REQUIRED)
+find_package(std_msgs REQUIRED)
+
+find_package(rosidl_default_generators REQUIRED)
+
+if(BUILD_TESTING)
+  find_package(ament_lint_auto REQUIRED)
+  # the following line skips the linter which checks for copyrights
+  # uncomment the line when a copyright and license is not present in all source files
+  #set(ament_cmake_copyright_FOUND TRUE)
+  # the following line skips cpplint (only works in a git repo)
+  # uncomment the line when this package is not in a git repo
+  #set(ament_cmake_cpplint_FOUND TRUE)
+  ament_lint_auto_find_test_dependencies()
+endif()
+
+rosidl_generate_interfaces(${PROJECT_NAME
+}
+  "msg/Age.msg"
+)
+
+ament_package()
+```
+
+```
+#package.xml
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>custom_interfaces</name>
+  <version>0.0.0</version>
+  <description>TODO: Package description</description>
+  <maintainer email="user@todo.todo">user</maintainer>
+  <license>TODO: License declaration</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <depend>rclcpp</depend>
+  <depend>std_msgs</depend>
+
+  <build_depend>rosidl_default_generators</build_depend>
+
+  <exec_depend>rosidl_default_runtime</exec_depend>
+
+  <member_of_group>rosidl_interface_packages</member_of_group>
+
+  <test_depend>ament_lint_auto</test_depend>
+  <test_depend>ament_lint_common</test_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>
+```
+
+```
+cd ~/ros2_ws
+colcon build --packages-select custom_interfaces
+source install/setup.bash
+
+ros2 interface show custom_interfaces/msg/Age
+```
