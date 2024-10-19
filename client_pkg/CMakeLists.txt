@@ -9,6 +9,7 @@ endif()
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(std_srvs REQUIRED)
+find_package(geometry_msgs REQUIRED)
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
@@ -32,10 +33,18 @@ ament_target_dependencies(stop_client_node rclcpp std_srvs)
 add_executable(service_client_v2 src/service_client_v2.cpp)
 ament_target_dependencies(service_client_v2 rclcpp std_srvs)
 
+add_executable(service_server_moving src/service_server_moving.cpp)
+ament_target_dependencies(service_server_moving rclcpp std_srvs geometry_msgs)
+
+add_executable(service_server_stop src/service_server_stop.cpp)
+ament_target_dependencies(service_server_stop rclcpp std_srvs geometry_msgs)
+
 install(TARGETS
    service_client_node
    stop_client_node
    service_client_v2
+   service_server_moving
+   service_server_stop
    DESTINATION lib/${PROJECT_NAME}
  )
 
