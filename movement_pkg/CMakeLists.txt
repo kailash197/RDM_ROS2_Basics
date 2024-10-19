@@ -28,8 +28,12 @@ endif()
 add_executable(movement_server_node src/movement_server.cpp)
 ament_target_dependencies(movement_server_node rclcpp geometry_msgs custom_interfaces)
 
+add_executable(movement_client_node src/movement_client.cpp)
+ament_target_dependencies(movement_client_node rclcpp custom_interfaces)
+
 install(TARGETS
    movement_server_node
+   movement_client_node
    DESTINATION lib/${PROJECT_NAME}
  )
 
