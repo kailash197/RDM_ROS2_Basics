@@ -28,8 +28,12 @@ endif()
 add_executable(distance_action_server_node src/distance_action_server.cpp)
 ament_target_dependencies(distance_action_server_node rclcpp rclcpp_action actions_quiz_msg geometry_msgs nav_msgs)
 
+add_executable(distance_action_client_node src/distance_action_client.cpp)
+ament_target_dependencies(distance_action_client_node rclcpp rclcpp_action actions_quiz_msg)
+
 install(TARGETS
    distance_action_server_node
+   distance_action_client_node
    DESTINATION lib/${PROJECT_NAME}
  )
 
